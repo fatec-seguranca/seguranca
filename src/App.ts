@@ -1,7 +1,8 @@
 import express from 'express';
 import colors from 'colors';
-import { createConnection } from 'typeorm';
 import 'reflect-metadata';
+
+import Database from './Database';
 
 class App {
   public express: express.Application;
@@ -9,7 +10,7 @@ class App {
   constructor() {
     this.express = express();
 
-    createConnection()
+    Database.createDatabaseConnection()
       .then((): void => {
         console.log(colors.green('Database connection stablished'));
       })

@@ -1,8 +1,14 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  BaseEntity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne
+} from 'typeorm';
 import User from './User';
 
 @Entity('message')
-export class Message {
+class Message extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -10,8 +16,10 @@ export class Message {
   content: string;
 
   @ManyToOne((type) => User, (user) => user.messages)
-  senderId: User;
+  sender: User;
 
   @ManyToOne((type) => User, (user) => user.messages)
-  recipientId: User;
+  recipient: User;
 }
+
+export default Message;

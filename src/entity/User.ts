@@ -5,7 +5,7 @@ import {
   Column,
   OneToMany
 } from 'typeorm';
-import { Message } from './Message';
+import Message from './Message';
 
 @Entity('user')
 class User extends BaseEntity {
@@ -29,7 +29,7 @@ class User extends BaseEntity {
 
   @OneToMany(
     (type) => Message,
-    (message) => message.senderId || message.recipientId
+    (message) => message.sender || message.recipient
   )
   messages: Message[];
 }
