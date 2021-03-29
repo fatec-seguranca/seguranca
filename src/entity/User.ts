@@ -1,18 +1,37 @@
-import {Entity, PrimaryGeneratedColumn, Column} from "typeorm";
+import {
+  Entity,
+  BaseEntity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany
+} from 'typeorm';
+import { Message } from './Message';
 
-@Entity()
-export class User {
+@Entity('user')
+class User extends BaseEntity {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @PrimaryGeneratedColumn()
-    id: number;
+  @Column()
+  firstname: string;
 
-    @Column()
-    firstName: string;
+  @Column()
+  lastname: string;
 
-    @Column()
-    lastName: string;
+  @Column()
+  email: string;
 
-    @Column()
-    age: number;
+  @Column()
+  avatar: string;
 
+  @Column()
+  password: string;
+
+  @OneToMany(
+    (type) => Message,
+    (message) => message.senderId || message.recipientId
+  )
+  messages: Message[];
 }
+
+export default User;
