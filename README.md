@@ -1,4 +1,4 @@
-# Seguranca
+# Segurança
 
 **Problema:** Um dos pontos levantados pela LGBD é que o cliente sempre deve ter a opção de solicitar
 que seus dados sejam apagados da base de dados de uma empresa, e isso não se limita apenas a base
@@ -28,7 +28,7 @@ que ele for restaurado e antes que seja liberado para produção.
  - Desenvolver uma forma para que a lista de execução seja executada apenas uma vez em cada base de dados, independente de quantas vezes o sistema for reiniciado.
 
 ## Sprint 3 (16/05)
- - Deixar a funcionalidade que registra e executa a lista de exclusões mais genéria para que possa ser consumida como uma biblioteca ao invés de uma parte do sistema;
+ - Deixar a funcionalidade que registra e executa a lista de exclusões mais genéria para que possa ser consumida como uma biblioteca ao invés de ser uma parte do sistema;
 
 ## Sprint 4 (05/06)
 
