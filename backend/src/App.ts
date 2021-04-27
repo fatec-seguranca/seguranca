@@ -1,15 +1,22 @@
 import express from 'express';
 import colors from 'colors';
 import 'reflect-metadata';
+import cors from 'cors';
+import bodyParser from 'body-parser';
 
 import Database from './Database';
-import ExclusionService from './services/ExclusionService';
+import ExclusionService from './service/ExclusionService';
+
+import routes from './routes';
 class App {
   public express: express.Application;
 
   constructor() {
     this.express = express();
+    this.express.use(cors());
+    this.express.use(bodyParser.json());
 
+    this.express.use(routes);
     Database.createDatabaseConnection()
       .then(
         async (): Promise<void> => {

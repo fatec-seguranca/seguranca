@@ -1,6 +1,6 @@
 import React from 'react';
 
-import DatabaseForm from './pages/DatabaseForm';
+import Routes from './routes'
 
 import { createMuiTheme, CssBaseline, ThemeProvider } from '@material-ui/core';
 
@@ -16,7 +16,7 @@ const App: React.FC = () => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <SnackbarProvider maxSnack={3}>
-        <DatabaseForm />
+        <Routes />
       </SnackbarProvider>
     </ThemeProvider>
   );

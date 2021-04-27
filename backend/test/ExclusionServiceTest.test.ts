@@ -1,4 +1,4 @@
-import ExclusionService from '../src/services/ExclusionService';
+import ExclusionService from '../src/service/ExclusionService';
 
 import Database from '../src/Database';
 beforeAll(async () => {

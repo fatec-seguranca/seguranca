@@ -3,8 +3,8 @@ import Database from '../src/Database';
 import User from '../src/entity/User';
 import Message from '../src/entity/Message';
 
-import UserService from '../src/services/UserService';
-import MessageService from '../src/services/MessageService';
+import UserService from '../src/service/UserService';
+import MessageService from '../src/service/MessageService';
 
 const userService = new UserService();
 

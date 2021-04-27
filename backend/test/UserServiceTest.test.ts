@@ -1,6 +1,6 @@
 import Database from '../src/Database';
 import User from '../src/entity/User';
-import UserService from '../src/services/UserService';
+import UserService from '../src/service/UserService';
 
 const userService = new UserService();
 
