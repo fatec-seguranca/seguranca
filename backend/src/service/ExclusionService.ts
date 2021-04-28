@@ -14,7 +14,7 @@ class ExclusionService {
     newIdentifier: number,
     tableName: string
   ): ExclusionFile[] {
-    if (!fs.existsSync('exclusionListTest.json')) {
+    if (!fs.existsSync('exclusionList.json')) {
       console.log('File not found');
       //TODO: No caso do arquivo não existir ele deve ser criado seguindo o modelo declarado na interface
     } else {
@@ -22,8 +22,6 @@ class ExclusionService {
       let fileData: ExclusionFile[] = JSON.parse(rawdata.toString());
 
       for (let i = 0; i < fileData.length; i++) {
-        console.log(i);
-
         if (fileData[i].table === tableName) {
           fileData[i].identifiers.push(newIdentifier);
         }
@@ -36,36 +34,40 @@ class ExclusionService {
 
   public async executeList(filename: string) {
     let rawdata = fs.readFileSync(filename);
-    let fileData: ExclusionFile = JSON.parse(rawdata.toString());
+    let fileData: ExclusionFile[] = JSON.parse(rawdata.toString());
 
     const connection = await getConnection();
     const queryRunner = connection.createQueryRunner();
 
     await queryRunner.connect();
-
-    for (let id in fileData.identifiers) {
-      console.log(
-        colors.yellow(
-          `Deleting record with id ${fileData.identifiers[id]} on table ${fileData.table}`
-        )
-      );
-      await queryRunner
-        .query(
-          `SELECT * FROM ${fileData.table} WHERE id=${fileData.identifiers[id]}`
-        )
-        .then(async (data: any[]) => {
-          if (data.length > 0) {
-            await queryRunner
-              .query(
-                `DELETE FROM ${fileData.table} WHERE id=${fileData.identifiers[id]}`
-              )
-              .then(() => {
-                console.log(colors.green(`Record deleted successfully!`));
-              });
-          } else {
-            console.log(colors.red('Record has already been deleted.'));
-          }
-        });
+    console.log(fileData);
+    for (let i = 0; i < fileData.length; i++) {
+      if (fileData[i].identifiers.length >= 1) {
+        for (let id in fileData[i].identifiers) {
+          console.log(
+            colors.yellow(
+              `Deleting record with id ${fileData[i].identifiers[id]} on table ${fileData[i].table}`
+            )
+          );
+          await queryRunner
+            .query(
+              `SELECT * FROM ${fileData[i].table} WHERE id=${fileData[i].identifiers[id]}`
+            )
+            .then(async (data: any[]) => {
+              if (data.length > 0) {
+                await queryRunner
+                  .query(
+                    `DELETE FROM ${fileData[i].table} WHERE id=${fileData[i].identifiers[id]}`
+                  )
+                  .then(() => {
+                    console.log(colors.green(`Record deleted successfully!`));
+                  });
+              } else {
+                console.log(colors.red('Record has already been deleted.'));
+              }
+            });
+        }
+      }
     }
   }
 

@@ -24,11 +24,14 @@ que ele for restaurado e antes que seja liberado para produção.
  - Rotina que é executada toda vez que o sistema é iniciado consumindo a lista de exclusões;
 ## Sprint 2 (18/04)
  - Exposição de algumas funcionalidades do sistema em rotas de uma Api;
+    -![Alt Text](https://raw.githubusercontent.com/fatec-seguranca/seguranca/master/content/print_routes.png)
  - Implementar um front basico;
- - Desenvolver uma forma para que a lista de execução seja executada apenas uma vez em cada base de dados, independente de quantas vezes o sistema for reiniciado.
+    -![Alt Text](https://raw.githubusercontent.com/fatec-seguranca/seguranca/master/content/gif_exclusion_form.gif)
+ - Melhorar a forma como os logs de execução da lista de exclusão são apresentados, para dar uma visão mais proxima da realidade para o cliente.
+    -![Alt Text](https://raw.githubusercontent.com/fatec-seguranca/seguranca/master/content/exclusion_logs.png)
 
 ## Sprint 3 (16/05)
- - Deixar a funcionalidade que registra e executa a lista de exclusões mais genéria para que possa ser consumida como uma biblioteca ao invés de ser uma parte do sistema;
+ - Deixar a funcionalidade que registra e executa a lista de exclusões mais genéria para que possa ser consumida como uma biblioteca ao invés de ser uma parte do sistema.
 
 ## Sprint 4 (05/06)
 
