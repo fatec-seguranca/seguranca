@@ -31,7 +31,9 @@ que ele for restaurado e antes que seja liberado para produção.
     -![Alt Text](https://raw.githubusercontent.com/fatec-seguranca/seguranca/master/content/exclusion_logs.png)
 
 ## Sprint 3 (16/05)
- - Deixar a funcionalidade que registra e executa a lista de exclusões mais genéria para que possa ser consumida como uma biblioteca ao invés de ser uma parte do sistema.
+ - Metodos para criar uma conexão com o banco de dados propria para a lista de exclusão;
+ - Front end para consumir os metodos de criação de conexão com o banco de dados, nesse interface será possível criar a conexão e validar se a mesma é valida;
+ - Validações para que não seja possível cadastrar um id que não existe na base de dados.
 
 ## Sprint 4 (05/06)
 
