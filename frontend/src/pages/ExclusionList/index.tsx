@@ -22,6 +22,8 @@ import StorageIcon from "@material-ui/icons/Storage";
 import AddIcon from "@material-ui/icons/Add";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
+import { useSnackbar } from "notistack";
+
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -64,6 +66,8 @@ const Landing: React.FC = () => {
   const [exclusionList, setExclusionList] = useState<ExclusionItem[]>([]);
   const classes = useStyles();
 
+  const { enqueueSnackbar } = useSnackbar();
+
   const getList = async () => {
     const exclusionList = await axios.get("http://localhost:8080/getList", {
       headers: { "Access-Control-Allow-Origin": "*" },
@@ -75,7 +79,21 @@ const Landing: React.FC = () => {
     await axios
       .post("http://localhost:8080/updateList", { newIdentifier, tableName })
       .then((response) => {
-        setExclusionList(response.data.exclusionList);
+        if (response.data.status === 1) {
+          enqueueSnackbar(
+            `Id ${newIdentifier} successfully registered on table ${tableName}.`,
+            {
+              variant: "success",
+              anchorOrigin: { vertical: "top", horizontal: "center" },
+            }
+          );
+          setExclusionList(response.data.exclusionList);
+        } else {
+          enqueueSnackbar(response.data.error, {
+            variant: "error",
+            anchorOrigin: { vertical: "top", horizontal: "center" },
+          });
+        }
       });
   };
 
@@ -83,15 +101,38 @@ const Landing: React.FC = () => {
     await axios
       .post("http://localhost:8080/deleteId", { identifier, tableName })
       .then((response) => {
-        setExclusionList(response.data.exclusionList);
+        if (response.data.status === 1) {
+          enqueueSnackbar(`Id ${identifier} successfully deleted on table ${tableName}.`, {
+            variant: "success",
+            anchorOrigin: { vertical: "top", horizontal: "center" },
+          });
+          setExclusionList(response.data.exclusionList);
+          setTable("");
+        } else {
+          enqueueSnackbar(response.data.error, {
+            variant: "error",
+            anchorOrigin: { vertical: "top", horizontal: "center" },
+          });
+        }
       });
   };
 
   const deleteTable = async (tableName: string) => {
     await axios
-      .post("http://localhost:8080/deleteTable", {tableName })
+      .post("http://localhost:8080/deleteTable", { tableName })
       .then((response) => {
-        setExclusionList(response.data.exclusionList);
+        if (response.data.status === 1) {
+          enqueueSnackbar(`Table ${tableName} successfully deleted.`, {
+            variant: "success",
+            anchorOrigin: { vertical: "top", horizontal: "center" },
+          });
+          setExclusionList(response.data.exclusionList);
+        }else{
+          enqueueSnackbar(response.data.error, {
+            variant: "error",
+            anchorOrigin: { vertical: "top", horizontal: "center" },
+          });
+        }
       });
   };
 
@@ -99,8 +140,19 @@ const Landing: React.FC = () => {
     await axios
       .post("http://localhost:8080/addTable", { tableName })
       .then((response) => {
-        setExclusionList(response.data.exclusionList);
-        setTable("");
+        if (response.data.status === 1) {
+          enqueueSnackbar("Table successfully registered.", {
+            variant: "success",
+            anchorOrigin: { vertical: "top", horizontal: "center" },
+          });
+          setExclusionList(response.data.exclusionList);
+          setTable("");
+        } else {
+          enqueueSnackbar(response.data.error, {
+            variant: "error",
+            anchorOrigin: { vertical: "top", horizontal: "center" },
+          });
+        }
       });
   };
   useEffect(() => {
@@ -184,7 +236,12 @@ const Landing: React.FC = () => {
                   <AccordionDetails>
                     <Grid container>
                       <Grid item xs={12}>
-                        <Button fullWidth variant="contained" color="secondary" onClick={() => deleteTable(item.table)}>
+                        <Button
+                          fullWidth
+                          variant="contained"
+                          color="secondary"
+                          onClick={() => deleteTable(item.table)}
+                        >
                           Delete Table
                         </Button>
                       </Grid>
@@ -209,9 +266,11 @@ const Landing: React.FC = () => {
                           size="small"
                           style={{ margin: "20px" }}
                           onClick={() => {
-                            let id: any = (document.getElementById(
-                              `${item.table}_input`
-                            ) as HTMLInputElement).value;
+                            let id: any = (
+                              document.getElementById(
+                                `${item.table}_input`
+                              ) as HTMLInputElement
+                            ).value;
                             updateTable(parseInt(id), item.table);
                           }}
                         >

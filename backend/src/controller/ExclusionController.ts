@@ -14,16 +14,22 @@ class ExclusionController {
   public async update(req: Request, res: Response): Promise<Response> {
     const { newIdentifier, tableName } = req.body;
 
-    const exclusionList = await ExclusionService.updateList(
-      'exclusionList.json',
-      newIdentifier,
-      tableName
-    );
-
-    return res.json({
-      status: 1,
-      exclusionList
-    });
+    try {
+      const exclusionList = await ExclusionService.updateList(
+        'exclusionList.json',
+        newIdentifier,
+        tableName
+      );
+      return res.json({
+        status: 1,
+        exclusionList
+      });
+    } catch (error) {
+      return res.json({
+        status: 0,
+        error: error.message
+      });
+    }
   }
 
   public async deleteId(req: Request, res: Response): Promise<Response> {
@@ -46,15 +52,21 @@ class ExclusionController {
     const { tableName } = req.body;
     console.log({ tableName });
 
-    const exclusionList = await ExclusionService.addTable(
-      'exclusionList.json',
-      tableName
-    );
-
-    return res.json({
-      status: 1,
-      exclusionList
-    });
+    try {
+      const exclusionList = await ExclusionService.addTable(
+        'exclusionList.json',
+        tableName
+      );
+      return res.json({
+        status: 1,
+        exclusionList
+      });
+    } catch (error) {
+      return res.json({
+        status: 0,
+        error: error.message
+      });
+    }
   }
 
   public async deleteTable(req: Request, res: Response): Promise<Response> {
