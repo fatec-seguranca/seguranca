@@ -32,13 +32,17 @@ que ele for restaurado e antes que seja liberado para produção.
 
 ## Sprint 3 (16/05)
  - Metodos para criar uma conexão com o banco de dados propria para a lista de exclusão;
+
+    ![Alt Text](https://raw.githubusercontent.com/fatec-seguranca/seguranca/master/content/print_db_routes.png)
  - Front end para consumir os metodos de criação de conexão com o banco de dados, nesse interface será possível criar a conexão e validar se a mesma é valida;
+    ![Alt Text](https://raw.githubusercontent.com/fatec-seguranca/seguranca/master/content/git_database_form.gif)
  - Validações para que não seja possível cadastrar um id que não existe na base de dados.
+    ![Alt Text](https://raw.githubusercontent.com/fatec-seguranca/seguranca/master/content/gif_exl_form_erros.gif)
 
 ## Sprint 4 (05/06)
  - Transpor todas os serviços implementados no arquivo "ExclusionListService" para a extrutura de um modulo plugável;
  - Implementar esse modulo na front end modelo para validar o funcionamento do modulo;
- - Documentar esse modulo de forma que seja muito claro como é feita a configuração e como os métodos são consumidos
+ - Documentar esse modulo de forma que seja muito claro como é feita a configuração e como os métodos são consumidos.
 
 # Membros do Grupo
 
