@@ -1,5 +1,10 @@
 import * as fs from 'fs';
-import { getConnection, getRepository } from 'typeorm';
+import {
+  ConnectionOptions,
+  createConnection,
+  getConnection,
+  getRepository
+} from 'typeorm';
 
 import colors from 'colors';
 
@@ -8,6 +13,13 @@ interface ExclusionFile {
   identifiers: Array<number>;
 }
 
+interface DatabaseFile {
+  host: string;
+  port: string;
+  username: string;
+  password: string;
+  database: string;
+}
 class ExclusionService {
   public async updateList(
     filename: string,
@@ -188,6 +200,47 @@ class ExclusionService {
 
       fs.writeFileSync(filename, JSON.stringify(fileData));
       return fileData;
+    }
+  }
+
+  public async createDatabaseConnection(
+    host: string,
+    port: string,
+    username: string,
+    password: string,
+    database: string
+  ): Promise<void> {
+    try {
+      const databaseConfig: ConnectionOptions = {
+        name: 'exlConn',
+        //TODO: Futuramente o SGBD também deve ser customizável
+        type: 'mysql',
+        host,
+        port: parseInt(port),
+        username,
+        password,
+        database
+      };
+      await createConnection(databaseConfig).then(async () => {
+        fs.writeFileSync(
+          'exclusionListConnection.json',
+          JSON.stringify(databaseConfig)
+        );
+        await getConnection('exlConn').close();
+      });
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  public async getDatabaseConfig(): Promise<DatabaseFile> {
+    try {
+      let rawdata = fs.readFileSync('exclusionListConnection.json');
+      let databaseConfig: DatabaseFile = JSON.parse(rawdata.toString());
+
+      return databaseConfig;
+    } catch (error) {
+      throw new Error(error.message);
     }
   }
 }

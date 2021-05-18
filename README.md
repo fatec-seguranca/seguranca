@@ -36,7 +36,9 @@ que ele for restaurado e antes que seja liberado para produção.
  - Validações para que não seja possível cadastrar um id que não existe na base de dados.
 
 ## Sprint 4 (05/06)
-
+ - Transpor todas os serviços implementados no arquivo "ExclusionListService" para a extrutura de um modulo plugável;
+ - Implementar esse modulo na front end modelo para validar o funcionamento do modulo;
+ - Documentar esse modulo de forma que seja muito claro como é feita a configuração e como os métodos são consumidos
 
 # Membros do Grupo
 

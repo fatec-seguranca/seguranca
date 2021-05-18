@@ -8,10 +8,10 @@ import ExclusionList from './pages/ExclusionList';
 const Routes: React.FC = () =>{
     return(
         <BrowserRouter>
-            <Route path='/database'>
+            <Route path='/database' exact>
                 <DatabaseForm />
             </Route>
-            <Route path='/'>
+            <Route path='/' exact>
                 <ExclusionList />
             </Route>
         </BrowserRouter>

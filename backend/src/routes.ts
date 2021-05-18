@@ -16,4 +16,8 @@ routes.post('/deleteTable', ExclusionController.deleteTable);
 
 routes.post('/addTable', ExclusionController.save);
 
+routes.post('/createConnection', ExclusionController.createConnection);
+
+routes.get('/getDatabaseConfig', ExclusionController.getDatabaseConnection);
+
 export default routes;

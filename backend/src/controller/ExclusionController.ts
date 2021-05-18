@@ -71,7 +71,6 @@ class ExclusionController {
 
   public async deleteTable(req: Request, res: Response): Promise<Response> {
     const { tableName } = req.body;
-    console.log({ tableName });
 
     const exclusionList = await ExclusionService.deleteTable(
       'exclusionList.json',
@@ -82,6 +81,49 @@ class ExclusionController {
       status: 1,
       exclusionList
     });
+  }
+
+  public async createConnection(
+    req: Request,
+    res: Response
+  ): Promise<Response> {
+    const { host, port, username, password, database } = req.body;
+
+    try {
+      await ExclusionService.createDatabaseConnection(
+        host,
+        port,
+        username,
+        password,
+        database
+      );
+      return res.json({
+        status: 1
+      });
+    } catch (error) {
+      return res.json({
+        status: 0,
+        error: error.message
+      });
+    }
+  }
+
+  public async getDatabaseConnection(
+    req: Request,
+    res: Response
+  ): Promise<Response> {
+    try {
+      const databaseConfig = await ExclusionService.getDatabaseConfig();
+      return res.json({
+        status: 1,
+        databaseConfig
+      });
+    } catch (error) {
+      return res.json({
+        status: 0,
+        error: error.message
+      });
+    }
   }
 }
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 import {
   TextField,
@@ -6,46 +6,88 @@ import {
   Container,
   Avatar,
   Button,
-  makeStyles
-} from '@material-ui/core';
-import StorageIcon from '@material-ui/icons/Storage';
+  makeStyles,
+} from "@material-ui/core";
+import StorageIcon from "@material-ui/icons/Storage";
 
-import {useSnackbar } from 'notistack';
+import { useSnackbar } from "notistack";
+
+import axios from "axios";
+import { useEffect } from "react";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main
+    backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1)
+    width: "100%", // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
   },
   submit: {
-    margin: theme.spacing(3, 0, 2)
-  }
+    margin: theme.spacing(3, 0, 2),
+  },
 }));
 
 const Landing: React.FC = () => {
-  const [host, setHost] = useState<string>('');
-  const [dbName, setDbName] = useState<string>('');
-  const [username, setUsername] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [host, setHost] = useState<string>("");
+  const [database, setDatabase] = useState<string>("");
+  const [port, setPort] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('submit');
+    console.log("submit");
+
+    await axios
+      .post("http://localhost:8080/createConnection", {
+        host,
+        database,
+        port,
+        username,
+        password,
+      })
+      .then((response) => {
+        if (response.data.status === 1) {
+          enqueueSnackbar(`Database connection successfully established.`, {
+            variant: "success",
+            anchorOrigin: { vertical: "top", horizontal: "center" },
+          });
+        } else {
+          enqueueSnackbar(response.data.error, {
+            variant: "error",
+            anchorOrigin: { vertical: "top", horizontal: "center" },
+          });
+        }
+      });
   };
-  
+
+  useEffect(() => {
+    axios.get("http://localhost:8080/getDatabaseConfig").then((response) => {
+      if (response.data.status === 1) {
+        setHost(response.data.databaseConfig.host || "");
+        setDatabase(response.data.databaseConfig.database || "");
+        setPort(response.data.databaseConfig.port || "");
+        setUsername(response.data.databaseConfig.username || "");
+        setPassword(response.data.databaseConfig.password || "");
+      } else {
+        enqueueSnackbar(response.data.error, {
+          variant: "error",
+          anchorOrigin: { vertical: "top", horizontal: "center" },
+        });
+      }
+    });
+  }, []);
   return (
     <Container component="main" maxWidth="xs" className="popIn">
       <div className={classes.paper}>
@@ -78,8 +120,20 @@ const Landing: React.FC = () => {
             label="Database name"
             id="dbName"
             autoComplete="database name"
-            value={dbName}
-            onChange={(e) => setDbName(e.target.value)}
+            value={database}
+            onChange={(e) => setDatabase(e.target.value)}
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="port"
+            label="Port"
+            id="port"
+            autoComplete="port"
+            value={port}
+            onChange={(e) => setPort(e.target.value)}
           />
           <TextField
             variant="outlined"
@@ -96,7 +150,6 @@ const Landing: React.FC = () => {
           <TextField
             variant="outlined"
             margin="normal"
-            required
             fullWidth
             name="password"
             label="Password"
@@ -106,14 +159,6 @@ const Landing: React.FC = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <Button
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Test connection
-          </Button>
           <Button
             type="submit"
             fullWidth
