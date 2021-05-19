@@ -40,7 +40,7 @@ que ele for restaurado e antes que seja liberado para produção.
     ![Alt Text](https://raw.githubusercontent.com/fatec-seguranca/seguranca/master/content/gif_exl_form_erros.gif)
 
 ## Sprint 4 (05/06)
- - Transpor todas os serviços implementados no arquivo "ExclusionListService" para a extrutura de um modulo plugável;
+ - Transpor todas os serviços implementados no arquivo "ExclusionListService" para a estrutura de um modulo plugável;
  - Implementar esse modulo na front end modelo para validar o funcionamento do modulo;
  - Documentar esse modulo de forma que seja muito claro como é feita a configuração e como os métodos são consumidos.
 
