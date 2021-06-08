@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import ExclusionService from '../service/ExclusionService';
+import ExclusionService from 'exclusion-list';
 
 class ExclusionController {
   public async index(req: Request, res: Response): Promise<Response> {
@@ -50,7 +50,6 @@ class ExclusionController {
 
   public async save(req: Request, res: Response): Promise<Response> {
     const { tableName } = req.body;
-    console.log({ tableName });
 
     try {
       const exclusionList = await ExclusionService.addTable(

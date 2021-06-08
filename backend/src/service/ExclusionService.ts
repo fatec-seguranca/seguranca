@@ -1,10 +1,5 @@
 import * as fs from 'fs';
-import {
-  ConnectionOptions,
-  createConnection,
-  getConnection,
-  getRepository
-} from 'typeorm';
+import { ConnectionOptions, createConnection, getConnection } from 'typeorm';
 
 import colors from 'colors';
 
@@ -33,7 +28,8 @@ class ExclusionService {
       } else {
         let rawdata = fs.readFileSync(filename);
         let fileData: ExclusionFile[] = JSON.parse(rawdata.toString());
-        const connection = await getConnection();
+        await this.establishDatabaseConnection();
+        const connection = await getConnection('exlConn');
         const queryRunner = connection.createQueryRunner();
 
         await queryRunner.connect();
@@ -55,9 +51,11 @@ class ExclusionService {
         }
 
         fs.writeFileSync(filename, JSON.stringify(fileData));
+        this.closeConnection();
         return fileData;
       }
     } catch (error) {
+      this.closeConnection();
       throw new Error(error.message);
     }
   }
@@ -66,7 +64,8 @@ class ExclusionService {
     try {
       let rawdata = fs.readFileSync(filename);
       let fileData: ExclusionFile[] = JSON.parse(rawdata.toString());
-      const connection = await getConnection();
+      await this.establishDatabaseConnection();
+      const connection = await getConnection('exlConn');
       const queryRunner = connection.createQueryRunner();
 
       await queryRunner.connect();
@@ -99,7 +98,9 @@ class ExclusionService {
           }
         }
       }
+      this.closeConnection();
     } catch (error) {
+      this.closeConnection();
       throw new Error(error.message);
     }
   }
@@ -159,7 +160,8 @@ class ExclusionService {
         const tablesRegistered = exclusionList.map((item) => {
           return item.table;
         });
-        const connection = await getConnection();
+        await this.establishDatabaseConnection();
+        const connection = await getConnection('exlConn');
         const queryRunner = connection.createQueryRunner();
 
         await queryRunner.connect();
@@ -175,9 +177,11 @@ class ExclusionService {
         });
 
         fs.writeFileSync(filename, JSON.stringify(exclusionList));
+        this.closeConnection();
         return exclusionList;
       }
     } catch (error) {
+      this.closeConnection();
       throw new Error(error.message);
     }
   }
@@ -228,9 +232,7 @@ class ExclusionService {
         );
         await getConnection('exlConn').close();
       });
-    } catch (error) {
-      throw new Error(error.message);
-    }
+    } catch (error) {}
   }
 
   public async getDatabaseConfig(): Promise<DatabaseFile> {
@@ -239,6 +241,31 @@ class ExclusionService {
       let databaseConfig: DatabaseFile = JSON.parse(rawdata.toString());
 
       return databaseConfig;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  public async establishDatabaseConnection() {
+    try {
+      const databaseConfig = await this.getDatabaseConfig();
+      await createConnection({
+        name: 'exlConn',
+        type: 'mysql',
+        host: databaseConfig.host,
+        port: parseInt(databaseConfig.port),
+        username: databaseConfig.username,
+        password: databaseConfig.password,
+        database: databaseConfig.database
+      });
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  public async closeConnection() {
+    try {
+      await getConnection('exlConn').close();
     } catch (error) {
       throw new Error(error.message);
     }

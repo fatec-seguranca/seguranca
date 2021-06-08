@@ -5,7 +5,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 
 import Database from './Database';
-import ExclusionService from './service/ExclusionService';
+import ExclusionService from 'exclusion-list';
 
 import routes from './routes';
 class App {
@@ -18,13 +18,11 @@ class App {
 
     this.express.use(routes);
     Database.createDatabaseConnection()
-      .then(
-        async (): Promise<void> => {
-          console.log(colors.green('Database connection stablished'));
+      .then(async (): Promise<void> => {
+        console.log(colors.green('Database connection stablished'));
 
-          await ExclusionService.executeList('exclusionList.json');
-        }
-      )
+        await ExclusionService.executeList('exclusionList.json');
+      })
       .catch((error) => {
         console.log(colors.red('Error while creating database connection'));
         console.log(colors.red(`Error: ${error}`));

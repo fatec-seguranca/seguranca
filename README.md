@@ -40,9 +40,20 @@ que ele for restaurado e antes que seja liberado para produção.
     ![Alt Text](https://raw.githubusercontent.com/fatec-seguranca/seguranca/master/content/gif_exl_form_erros.gif)
 
 ## Sprint 4 (05/06)
- - Transpor todas os serviços implementados no arquivo "ExclusionListService" para a estrutura de um modulo plugável;
- - Implementar esse modulo na front end modelo para validar o funcionamento do modulo;
+ - Transpor todas os serviços implementados no arquivo "ExclusionListService" para a estrutura de um modulo plugável:
+
+```
+Para instalar o modulo basta executar essa linha 
+no terminal:
+
+npm i exclusion-list
+```
+ - Implementar esse modulo no backend para validar o funcionamento:
+    ![Alt Text](https://raw.githubusercontent.com/fatec-seguranca/seguranca/master/content/sprint_final.png)
+    
  - Documentar esse modulo de forma que seja muito claro como é feita a configuração e como os métodos são consumidos.
+
+   - A documentação do modulo pode ser encontrada na sua pagina no [npm](https://www.npmjs.com/package/exclusion-list/)
 
 # Membros do Grupo
 
